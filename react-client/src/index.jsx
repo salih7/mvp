@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import List from './components/List.jsx';
+import Table from './components/Table.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -49,7 +50,8 @@ class App extends React.Component {
       <h1>Item List</h1>
       <input type="text" placeholder="Enter new item" onChange={this.captureInput.bind(this)} />
       <button onClick={this.onClickAdd.bind(this)}>Add to list</button>
-      <List items={this.state.items}/>
+      <List items={this.state.items} />
+      <Table />
     </div>)
   }
 }
