@@ -1,8 +1,9 @@
 import React from 'react';
 
 const ListItem = (props) => (
-  <div>
-    { props.item.description }
+  <div id="row">
+    <td>{ props.item.description }</td>
+    <td>{ props.item.quantity }</td>
   </div>
 )
 

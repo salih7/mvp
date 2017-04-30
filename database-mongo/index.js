@@ -13,8 +13,10 @@ db.once('open', function() {
 });
 
 var itemSchema = mongoose.Schema({
-  quantity: Number,
-  description: String
+  name: { type: String, unique: true },
+  photoUrl: String,
+  email: String,
+  location: String
 });
 
 var Item = mongoose.model('Item', itemSchema);
@@ -25,6 +27,16 @@ var selectAll = function(callback) {
       callback(err, null);
     } else {
       callback(null, items);
+    }
+  });
+};
+
+var selectOne = function(user, callback) {
+  Item.find(user, function(err, item) {
+    if(err) {
+      callback(err, null);
+    } else {
+      callback(null, item)
     }
   });
 };

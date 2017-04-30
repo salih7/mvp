@@ -3,10 +3,28 @@ import ListItem from './ListItem.jsx';
 
 const List = (props) => (
   <div>
-    <h4> List Component </h4>
-    There are { props.items.length } items.
-    { props.items.map(item => <ListItem item={item}/>)}
+    There are { props.items.length } items.   
+    <div>
+      <img src={props.photoUrl} width="382" height="255" />
+    </div>
+    <div id="name">
+      <h2>Name:   {props.name}</h2>
+      <h2>Email:   {props.email}</h2>
+      <h2>Current Location:   {props.location}</h2>
+    </div>
   </div>
 )
 
 export default List;
+
+// <table>
+//   <thead>
+//     <tr>
+//       <th>Description</th>
+//       <th>Quantity</th>
+//     </tr>
+//   </thead>
+//   <tbody>
+//     { props.items.map(item => <ListItem item={item}/>)}
+//   </tbody>
+// </table>
