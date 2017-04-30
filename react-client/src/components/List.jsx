@@ -11,6 +11,7 @@ const List = (props) => (
       <h2>Name:   {props.name}</h2>
       <h2>Email:   {props.email}</h2>
       <h2>Current Location:   {props.location}</h2>
+      <h2>What I'm doing:   {props.work}</h2>
     </div>
   </div>
 )

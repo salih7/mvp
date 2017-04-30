@@ -34,10 +34,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // });
 
 app.get('/add-user', function(req, res) {
-  console.log('*************');
-  if(req.query) {
+  console.log('*****************************');
+  // if(req.query) {
 
-  }
+  // }
   items.selectAll(function(err, results) {
     if(err) {
       console.log(err);
@@ -53,6 +53,7 @@ app.post('/', function (req, res) {
                     name: req.body.name,
                     email: req.body.email,
                     location: req.body.location,
+                    work: req.body.work,
                     photoUrl: req.body.photoUrl
                  };
   items.insertOne(listItem, function(err, item) {

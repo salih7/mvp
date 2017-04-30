@@ -16,6 +16,10 @@ const UserForm = (props) => (
       <td><input id="input_location" type="text" placeholder="Enter current location" /></td>
     </div>
     <div className="row">
+      <td>What I'm doing:</td> 
+      <td><input id="input_work" type="text" placeholder="Enter what you're doing" /></td>
+    </div>
+    <div className="row">
       <td>Photo URL:</td> 
       <td><input id="input_photoUrl" type="text" placeholder="Enter URL for photo" /></td>
     </div>
@@ -24,6 +28,7 @@ const UserForm = (props) => (
                                        name: $('#input_name').val(),
                                        email: $('#input_email').val(),
                                        location: $('#input_location').val(),
+                                       work: $$('#input_work').val(),
                                        photoUrl: $('#input_photoUrl').val()
                                      };
                       props.onClickAdd(userInfo);                                  

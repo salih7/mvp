@@ -11,6 +11,7 @@ class App extends React.Component {
       name: '',
       email: '',
       location: '',
+      work: '',
       photoUrl: '',
       items: [],
       profileVisibile: false,
@@ -20,12 +21,12 @@ class App extends React.Component {
 
   componentDidMount() {
     $.ajax({
-      url: '/items', 
+      url: '/add-user', 
       success: (data) => {
         this.setState({
           items: data
         });
-        //console.log(this.state.items); //consolelog---------------------------------
+        console.log('Component did mount!!!!!!', this.state.items.length); //consolelog---------------------------------
         this.state.items.forEach(user => {
           $('#userSelect').append(`<option>${user.name}</option>`);
         });
@@ -75,6 +76,7 @@ class App extends React.Component {
         name: selectedUserData.name || 'No name',
         email: selectedUserData.email || 'No email',
         location: selectedUserData.location || 'No location',
+        work: selectedUserData.work || 'No work',
         photoUrl: selectedUserData.photoUrl || 'No photo',
         profileVisibile: true,
         inputVisible: false
@@ -104,7 +106,8 @@ class App extends React.Component {
             ? <List items={this.state.items} 
                     name={this.state.name}
                     email={this.state.email}
-                    location={this.state.location} 
+                    location={this.state.location}
+                    work={this.state.work} 
                     photoUrl={this.state.photoUrl}
               /> 
             : null

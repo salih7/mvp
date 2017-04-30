@@ -16,7 +16,8 @@ var itemSchema = mongoose.Schema({
   name: { type: String, unique: true },
   photoUrl: String,
   email: String,
-  location: String
+  location: String,
+  work: String
 });
 
 var Item = mongoose.model('Item', itemSchema);
@@ -41,6 +42,7 @@ var selectOne = function(user, callback) {
   });
 };
 
+
 var insertOne = function(item, callback) {
   var listItem = new Item(item);
   listItem.save(function(err) {
@@ -48,6 +50,16 @@ var insertOne = function(item, callback) {
       callback(err, null);
     } else {
       callback(null, listItem);
+    }
+  });
+};
+
+var insertMany = function(collectionArray, callback) {
+  Item.collection.insert(collectionArray, function(err, docs) {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, docs);
     }
   });
 };
@@ -66,6 +78,10 @@ var removeAll = function(callback) {
 
 module.exports.selectAll = selectAll;
 
+module.exports.selectOne = selectOne;
+
 module.exports.insertOne = insertOne;
+
+module.exports.insertMany = insertMany;
 
 module.exports.removeAll = removeAll;
