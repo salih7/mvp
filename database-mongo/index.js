@@ -42,7 +42,6 @@ var selectOne = function(user, callback) {
   });
 };
 
-
 var insertOne = function(item, callback) {
   var listItem = new Item(item);
   listItem.save(function(err) {

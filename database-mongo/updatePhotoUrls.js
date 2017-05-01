@@ -54,11 +54,3 @@ for(var name in photoFileIds) {
                      } 
                     );
 }
-
-// $.get("https://www.googleapis.com/drive/v2/files?q='0B_VbSXjYPQ4iaU5LeTBzemRpblE'+in+parents&key=AIzaSyDBENGISUHt0AxhU_EotpiXwj8CPsbaHXs", function(folderObj) {
-// photoArray = folderObj.items;
-// photoArray.forEach(photo => {
-//   photoObj[photo.title.slice(0, photo.title.length - 4)] = photo.id;
-// });
-// console.log(photoObj);
-// console.log(JSON.stringify(photoObj));

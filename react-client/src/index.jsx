@@ -23,8 +23,8 @@ class App extends React.Component {
 
   renderList() {
     console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', window.loggedInEmail);
+    var cohortMate = false;
     if(window.loggedInEmail) {
-      this.setState({ isLoggedIn: true });     
       $.ajax({
         url: '/add-user', 
         success: (data) => {
@@ -32,8 +32,18 @@ class App extends React.Component {
             items: data
           });
           this.state.items.forEach(user => {
-            $('#userSelect').append(`<option>${user.name}</option>`);
-          });       
+            if(user.email === window.loggedInEmail) {
+              cohortMate = true;
+            }
+          });
+          if(cohortMate) {
+            this.setState({ isLoggedIn: true });
+            this.state.items.forEach(user => {
+              $('#userSelect').append(`<option>${user.name}</option>`);
+            });        
+          } else {
+            alert("You're not in the cohort database. Contact administrator!");
+          }
         },
         error: (err) => {
           console.log('err', err);
@@ -44,24 +54,8 @@ class App extends React.Component {
     }
   }
 
-  // componentDidMount() {
-  //   $.ajax({
-  //     url: '/add-user', 
-  //     success: (data) => {
-  //       this.setState({
-  //         items: data
-  //       });
-  //       this.state.items.forEach(user => {
-  //         $('#userSelect').append(`<option>${user.name}</option>`);
-  //       });       
-  //     },
-  //     error: (err) => {
-  //       console.log('err', err);
-  //     }
-  //   });
-  // }
 
-  updateInfo(userUpdateInfo) {
+  showInputFields() {
     this.setState({ inputVisible: true});
   }
 
@@ -126,7 +120,7 @@ class App extends React.Component {
         <div>
           {
             this.state.isAuthenticatedUser
-            ? <button className="update" onClick={this.updateInfo.bind(this)}>Update Profile</button>
+            ? <button className="update" onClick={this.showInputFields.bind(this)}>Update Profile</button>
             : null
           }
         </div>
