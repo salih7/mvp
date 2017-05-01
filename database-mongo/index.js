@@ -76,6 +76,16 @@ var removeAll = function(callback) {
     });
 };
 
+var update = function(query, update, callback) {
+  Item.collection.update(query, update, function(err, doc) {
+    if(err) {
+      callback(err, null);
+    } else {
+      callback(null, doc);
+    }
+  });
+}
+
 module.exports.selectAll = selectAll;
 
 module.exports.selectOne = selectOne;
@@ -85,3 +95,5 @@ module.exports.insertOne = insertOne;
 module.exports.insertMany = insertMany;
 
 module.exports.removeAll = removeAll;
+
+module.exports.update = update;

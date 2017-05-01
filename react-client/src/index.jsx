@@ -20,21 +20,27 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    var photoArray = [];
+    var photoObj = {};
     $.ajax({
       url: '/add-user', 
       success: (data) => {
         this.setState({
           items: data
         });
-        console.log('Component did mount!!!!!!', this.state.items.length); //consolelog---------------------------------
+        //console.log('Component did mount!!!!!!', this.state.items.length); //consolelog---------------------------------
         this.state.items.forEach(user => {
           $('#userSelect').append(`<option>${user.name}</option>`);
-        });
+        });       
       },
       error: (err) => {
         console.log('err', err);
       }
     });
+  }
+
+  updateInfo(userUpdateInfo) {
+    $.post('/', userUpdateInfo);
   }
 
   onClickAdd(userInfo) {
@@ -85,35 +91,55 @@ class App extends React.Component {
   }
 
   render () {
-    return (<div>
-      <h1>LookMeUp</h1>
-      <div id="users">
-        <select id="userSelect" onChange={this.selectUser.bind(this)}>
-          <option>Select user...</option>
-          <option>Add new user...</option>
-        </select>
-      </div>
+    return (
       <div>
-        { 
-          this.state.inputVisible 
-            ? <UserForm onClickAdd={this.onClickAdd.bind(this)} />
-            : null
-        }
+        <h1>LookMeUp</h1>
+        <div className="g-signin2" data-onsuccess="onSignIn">Sign in yo</div>
+          {
+            function onSignIn(googleUser) {
+              // Useful data for your client-side scripts:
+              var profile = googleUser.getBasicProfile();
+              console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+              console.log('Full Name: ' + profile.getName());
+              console.log('Given Name: ' + profile.getGivenName());
+              console.log('Family Name: ' + profile.getFamilyName());
+              console.log("Image URL: " + profile.getImageUrl());
+              console.log("Email: " + profile.getEmail());
+
+              // The ID token you need to pass to your backend:
+              var id_token = googleUser.getAuthResponse().id_token;
+              console.log("ID Token: " + id_token);
+            }
+          }
+
+        <div id="users">
+          <select id="userSelect" onChange={this.selectUser.bind(this)}>
+            <option>Select user...</option>
+            <option>Add new user...</option>
+          </select>
+        </div>
+        <div>
+          { 
+            this.state.inputVisible 
+              ? <UserForm onClickAdd={this.onClickAdd.bind(this)} />
+              : null
+          }
+        </div>
+        <div>
+          {
+            this.state.profileVisibile
+              ? <List items={this.state.items} 
+                      name={this.state.name}
+                      email={this.state.email}
+                      location={this.state.location}
+                      work={this.state.work} 
+                      photoUrl={this.state.photoUrl}
+                /> 
+              : null
+          }
+        </div>
       </div>
-      <div>
-        {
-          this.state.profileVisibile
-            ? <List items={this.state.items} 
-                    name={this.state.name}
-                    email={this.state.email}
-                    location={this.state.location}
-                    work={this.state.work} 
-                    photoUrl={this.state.photoUrl}
-              /> 
-            : null
-        }
-      </div>
-    </div>)
+    )
   }
 }
 
