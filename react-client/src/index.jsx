@@ -15,49 +15,62 @@ class App extends React.Component {
       photoUrl: '',
       items: [],
       profileVisibile: false,
-      inputVisible: false
+      inputVisible: false,
+      isLoggedIn: false,
+      isAuthenticatedUser: false
     }
   }
 
-  componentDidMount() {
-    var photoArray = [];
-    var photoObj = {};
-    $.ajax({
-      url: '/add-user', 
-      success: (data) => {
-        this.setState({
-          items: data
-        });
-        //console.log('Component did mount!!!!!!', this.state.items.length); //consolelog---------------------------------
-        this.state.items.forEach(user => {
-          $('#userSelect').append(`<option>${user.name}</option>`);
-        });       
-      },
-      error: (err) => {
-        console.log('err', err);
-      }
-    });
+  renderList() {
+    console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>', window.loggedInEmail);
+    if(window.loggedInEmail) {
+      this.setState({ isLoggedIn: true });     
+      $.ajax({
+        url: '/add-user', 
+        success: (data) => {
+          this.setState({
+            items: data
+          });
+          this.state.items.forEach(user => {
+            $('#userSelect').append(`<option>${user.name}</option>`);
+          });       
+        },
+        error: (err) => {
+          console.log('err', err);
+        }
+      });
+    } else {
+      this.setState({ isLoggedIn: false });
+    }
   }
+
+  // componentDidMount() {
+  //   $.ajax({
+  //     url: '/add-user', 
+  //     success: (data) => {
+  //       this.setState({
+  //         items: data
+  //       });
+  //       this.state.items.forEach(user => {
+  //         $('#userSelect').append(`<option>${user.name}</option>`);
+  //       });       
+  //     },
+  //     error: (err) => {
+  //       console.log('err', err);
+  //     }
+  //   });
+  // }
 
   updateInfo(userUpdateInfo) {
-    $.post('/', userUpdateInfo);
+    this.setState({ inputVisible: true});
   }
 
-  onClickAdd(userInfo) {
-    // $.ajax({
-    //   type: 'POST',
-    //   url: '/',
-    //   data: { item: this.state.input },
-    //   success: () => {
-    //     this.setState
-    //   } 
-    // });
-    console.log(userInfo);
-    $.post('http://127.0.0.1:3000/', userInfo);
-    $('#userSelect').append(`<option>${userInfo.name}</option>`);
-    $.get('http://127.0.0.1:3000/add-user', (data) => {
+  onClickUpdate(userInfo) {
+    $.post('/', userInfo);
+    $.get('/add-user', (data) => {
       this.setState({
-        items: data
+        items: data,
+        inputVisible: false
       });
       $('#userSelect').val(userInfo.name);
       this.selectUser();
@@ -78,12 +91,18 @@ class App extends React.Component {
       })
     } else {
       var selectedUserData = this.state.items.filter(user => user.name === selectedUserName)[0];
+      if(window.loggedInEmail !== undefined &&
+         window.loggedInEmail === selectedUserData.email) {
+        this.setState({ isAuthenticatedUser: true });
+      } else {
+        this.setState({ isAuthenticatedUser: false});
+      }
       this.setState({
-        name: selectedUserData.name || 'No name',
-        email: selectedUserData.email || 'No email',
-        location: selectedUserData.location || 'No location',
-        work: selectedUserData.work || 'No work',
-        photoUrl: selectedUserData.photoUrl || 'No photo',
+        name: selectedUserData.name || 'No name set',
+        email: selectedUserData.email || 'No email set',
+        location: selectedUserData.location || 'No location set',
+        work: selectedUserData.work || 'No work set',
+        photoUrl: selectedUserData.photoUrl || 'No photo set',
         profileVisibile: true,
         inputVisible: false
       });  
@@ -93,35 +112,28 @@ class App extends React.Component {
   render () {
     return (
       <div>
-        <h1>LookMeUp</h1>
-        <div className="g-signin2" data-onsuccess="onSignIn">Sign in yo</div>
+        <button id="start" onClick={this.renderList.bind(this)}>Click After Login</button>
+        {
+          this.state.isLoggedIn
+            ? <div id="users">
+                <select id="userSelect" onChange={this.selectUser.bind(this)}>
+                  <option>Select user...</option>
+                  <option>Add new user...</option>
+                </select>
+              </div>
+            : null
+        }
+        <div>
           {
-            function onSignIn(googleUser) {
-              // Useful data for your client-side scripts:
-              var profile = googleUser.getBasicProfile();
-              console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-              console.log('Full Name: ' + profile.getName());
-              console.log('Given Name: ' + profile.getGivenName());
-              console.log('Family Name: ' + profile.getFamilyName());
-              console.log("Image URL: " + profile.getImageUrl());
-              console.log("Email: " + profile.getEmail());
-
-              // The ID token you need to pass to your backend:
-              var id_token = googleUser.getAuthResponse().id_token;
-              console.log("ID Token: " + id_token);
-            }
+            this.state.isAuthenticatedUser
+            ? <button className="update" onClick={this.updateInfo.bind(this)}>Update Profile</button>
+            : null
           }
-
-        <div id="users">
-          <select id="userSelect" onChange={this.selectUser.bind(this)}>
-            <option>Select user...</option>
-            <option>Add new user...</option>
-          </select>
         </div>
         <div>
           { 
-            this.state.inputVisible 
-              ? <UserForm onClickAdd={this.onClickAdd.bind(this)} />
+            this.state.inputVisible
+              ? <UserForm onClickUpdate={this.onClickUpdate.bind(this)} updateName={this.state.name} />
               : null
           }
         </div>

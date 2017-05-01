@@ -3,7 +3,6 @@ import ListItem from './ListItem.jsx';
 
 const List = (props) => (
   <div>
-    There are { props.items.length } items.   
     <div>
       <img src={props.photoUrl} width="382" height="255" />
     </div>
@@ -17,15 +16,3 @@ const List = (props) => (
 )
 
 export default List;
-
-// <table>
-//   <thead>
-//     <tr>
-//       <th>Description</th>
-//       <th>Quantity</th>
-//     </tr>
-//   </thead>
-//   <tbody>
-//     { props.items.map(item => <ListItem item={item}/>)}
-//   </tbody>
-// </table>

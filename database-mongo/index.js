@@ -77,7 +77,7 @@ var removeAll = function(callback) {
 };
 
 var update = function(query, update, callback) {
-  Item.collection.update(query, update, function(err, doc) {
+  Item.collection.update(query, { $set: update }, function(err, doc) {
     if(err) {
       callback(err, null);
     } else {

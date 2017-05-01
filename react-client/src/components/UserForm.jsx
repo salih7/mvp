@@ -5,7 +5,7 @@ const UserForm = (props) => (
   <div>
     <div className="row">
       <td>Name:</td> 
-      <td><input id="input_name" type="text" placeholder="Enter name" /></td>
+      <td><input id="input_name" type="text" placeholder="Full name required" /></td>
     </div>
     <div className="row">
       <td>Email:</td> 
@@ -23,16 +23,16 @@ const UserForm = (props) => (
       <td>Photo URL:</td> 
       <td><input id="input_photoUrl" type="text" placeholder="Enter URL for photo" /></td>
     </div>
-    <button onClick={() => {
+    <button className="update" onClick={() => {
                       var userInfo = { 
                                        name: $('#input_name').val(),
                                        email: $('#input_email').val(),
                                        location: $('#input_location').val(),
-                                       work: $$('#input_work').val(),
+                                       work: $('#input_work').val(),
                                        photoUrl: $('#input_photoUrl').val()
                                      };
-                      props.onClickAdd(userInfo);                                  
-                    }}>Add user</button>    
+                      props.onClickUpdate(userInfo);                                  
+                    }}>Update Now</button>    
   </div>
 )
 

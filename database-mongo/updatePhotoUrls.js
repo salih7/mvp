@@ -34,25 +34,27 @@ var photoFileIds = {
   "Steve Kim":"0B3AAJJ2UZGHwY0h1TmxPNV9EMms",
   "Tom Dickson":"0B3AAJJ2UZGHwbmtnbUdLUndHV0k",
   "Tyler Pate":"0B3AAJJ2UZGHwSEN2djhwSDVUME0",
-  "Vincent Van Buskirk":"0B3AAJJ2UZGHwSU8tOFBveTR0dDQ"
+  "Vincent Van Buskirk":"0B3AAJJ2UZGHwSU8tOFBveTR0dDQ",
+  length: 34
 }
 
 for(var name in photoFileIds) {
+  var done = 0;
   collections.update(
                      { name: name }, 
-                     { $set: { photoUrl: `https://drive.google.com/uc?export=view&id=${photoFileIds[name]}`
-                             } 
-                     },
+                     { photoUrl: `https://drive.google.com/uc?export=view&id=${photoFileIds[name]}` },
                      function(err, doc) {
                        if(err) {
                          console.log(err);
                          process.exit();
                        } else {
-                         console.log('Successfully updated document');
+                         console.log('Successfully updated document', ++done);
+                         done === photoFileIds.length ? process.exit() : null;
                        }
                      } 
                     );
 }
+
 // $.get("https://www.googleapis.com/drive/v2/files?q='0B_VbSXjYPQ4iaU5LeTBzemRpblE'+in+parents&key=AIzaSyDBENGISUHt0AxhU_EotpiXwj8CPsbaHXs", function(folderObj) {
 // photoArray = folderObj.items;
 // photoArray.forEach(photo => {

@@ -49,31 +49,31 @@ app.get('/add-user', function(req, res) {
 
 app.post('/', function (req, res) {
   console.log('Req body contains: ', req.body);
-  var listItem = { 
-                    name: req.body.name,
-                    email: req.body.email,
-                    location: req.body.location,
-                    work: req.body.work,
-                    photoUrl: req.body.photoUrl
-                 };
-  items.insertOne(listItem, function(err, item) {
-    if(err) {
-      console.error('Some error occured inserting... ', err);
-    } else {
-      console.log('Inserted: ', item);
-      res.status(201).send();
-      //res.redirect(`/add-user/?name=${req.body.name}`);
-      // items.selectAll(function(err, results) {
-      //   if (err) {
-      //     console.error('xxxxxxxxx error querying: ', err);
-      //     res.status(201).send();
-      //   } else {  
-      //     console.log('Currently in database: ', results);
-      //     res.status(201).send();
-      //   }
-      // });
-    }
-  });
+  // var listItem = { 
+  //                   name: req.body.name,
+  //                   email: req.body.email,
+  //                   location: req.body.location,
+  //                   work: req.body.work,
+  //                   photoUrl: req.body.photoUrl
+  //                };
+  var updateInfo = {};
+  
+  req.body.name ? updateInfo.name = req.body.name : null;
+  req.body.email ? updateInfo.email = req.body.email : null;
+  req.body.location ? updateInfo.location = req.body.location : null;
+  req.body.work ? updateInfo.work = req.body.work : null;
+  req.body.photoUrl ? updateInfo.photoUrl = req.body.photoUrl : null;
+
+  if(req.body.name) {
+    items.update({ name: req.body.name }, updateInfo, function(err, item) {
+      if(err) {
+        console.error('Some error occured updating... ', err);
+      } else {
+        console.log('Updated successfully!');
+        res.status(201).send();
+      }
+    });
+  }
 });
 
 app.listen(3000, function() {
